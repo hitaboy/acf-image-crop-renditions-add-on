@@ -47,7 +47,7 @@ class acf_field_image_crop extends acf_field_image {
             'force_crop' => 'yes',
             'crop_type' => 'hard',
             'preview_size' => 'medium',
-            'save_format' => 'id',
+            'save_format' => 'url',
             'save_in_media_library' => 'yes',
             'target_size' => 'custom',
             'library' => 'all',
