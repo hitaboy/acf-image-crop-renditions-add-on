@@ -24,7 +24,7 @@ msgstr ""
 #: acf-image-crop-v5.php:32
 #@ default
 #@ acf-image_crop
-msgid "Image with user-crop"
+msgid "Image + user-crop + renditions"
 msgstr "Bild (mit Größenoption)"
 
 #: acf-image-crop-v4.php:24
@@ -365,4 +365,3 @@ msgstr "Beschneiden"
 #@ acf-image_crop
 msgid "Crop"
 msgstr "Beschneiden"
-

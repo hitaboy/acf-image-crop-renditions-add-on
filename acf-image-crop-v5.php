@@ -29,7 +29,7 @@ class acf_field_image_crop extends acf_field_image {
         *  label (string) Multiple words, can include spaces, visible when selecting a field type
         */
 
-        $this->label = __('Image with user-crop', 'acf-image_crop');
+        $this->label = __('Image + user-crop + renditions', 'acf-image_crop');
 
 
         /*
@@ -44,14 +44,14 @@ class acf_field_image_crop extends acf_field_image {
         */
 
         $this->defaults = array(
-            'force_crop' => 'no',
+            'force_crop' => 'yes',
             'crop_type' => 'hard',
             'preview_size' => 'medium',
             'save_format' => 'id',
             'save_in_media_library' => 'yes',
-            'target_size' => 'thumbnail',
+            'target_size' => 'custom',
             'library' => 'all',
-            'retina_mode' => 'no',
+            'retina_mode' => 'yes',
             'renditions' => ''
         );
 
