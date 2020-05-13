@@ -211,7 +211,7 @@
             }
             $.post(ajaxurl, data, function(data, textStatus, xhr) {
                 if(data.success){
-                  console.log(data)
+                  // console.log(data)
                 }else{ }
             }, 'json');
             // vars
@@ -430,7 +430,7 @@ function initialize_field( $el ) {
             }
             $.post(ajaxurl, data, function(data, textStatus, xhr) {
                 if(data.success){
-                    console.log($field.find('[data-name=remove]'));
+                    // console.log($field.find('[data-name=remove]'));
                     $field.find('[data-name=image]').attr('src', data.preview_url);
                     $field.find('[data-name=remove]').attr('data-renditions', data.renditions);
                     $field.find('[data-name=remove]').data('renditions', data.renditions);
