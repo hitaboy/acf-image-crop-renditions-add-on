@@ -323,6 +323,8 @@ class acf_field_image_crop extends acf_field_image {
         }
 
         global $post;
+        // Fix for taxonomy pages
+        if(empty($post)){ $post = (object) array('ID' => 0); }
         // vars
         $div_atts = array(
             'class'                 => 'acf-image-uploader acf-cf acf-image-crop',
@@ -371,7 +373,7 @@ class acf_field_image_crop extends acf_field_image {
         $masterWidth = intval($field['width']);
         $masterHeight = intval($field['height']);
         if( $masterHeight == 0 && !empty($url) ){
-          $position = strpos($url, "_crop@2x");
+          $position = strpos($url, "@2x");
           if(!empty($position)){
             $height_pos = strrpos(substr($url, 0, $position), "x");
             $masterHeight = substr($url, ($height_pos+1), ($position-$height_pos-1));
@@ -382,7 +384,9 @@ class acf_field_image_crop extends acf_field_image {
         $masterString = $masterWidth."x".$masterHeight;
         foreach( $renditions as $rendition ) {
           $targetWidth = intval($rendition);
+          pr2($targetWidth);
           $targetHeight = round(($targetWidth*$masterHeight)/$masterWidth);
+          pr2($targetHeight);
           $newString = $targetWidth."x".$targetHeight;
           $newUrl = str_replace($masterString,$newString,$url);
           $response[] =  $newUrl;
@@ -614,9 +618,13 @@ class acf_field_image_crop extends acf_field_image {
       }
       $response = array();
       $renditions = explode(",",$_POST['renditions']);
+      $response['renditionsDeleted'] = array();
       foreach( $renditions as $rendition ){
         $attachmentid = get_attachment_id( $rendition );
+        $file = get_attached_file($attachmentid, true);
         wp_delete_attachment( $attachmentid, true );
+        unlink($file);
+        $response['renditionsDeleted'][] = $file;
       }
       $response['img'] = $_POST['img'];
       $response['renditions'] = $_POST['renditions'];
@@ -658,7 +666,7 @@ class acf_field_image_crop extends acf_field_image {
             $originalFileExtension = array_pop($originalFileName);
 
             // Generate new base filename
-            $targetFileName = implode('.', $originalFileName) . '_' . $date->getTimestamp() . '_' . (round($targetW/2)) . 'x' . (round($targetH/2)) . apply_filters('acf-image-crop/filename_postfix', '_crop')  . '.' . $originalFileExtension;
+            $targetFileName = implode('.', $originalFileName) . '_' . $date->getTimestamp() . '_' . (round($targetW/2)) . 'x' . (round($targetH/2)) . '.' . $originalFileExtension;
 
 
             // Generate target path new file using existing media library
@@ -666,7 +674,7 @@ class acf_field_image_crop extends acf_field_image {
               //$targetFilePath = $mediaDir['path'] . '/' . wp_unique_filename( $mediaDir['path'], $targetFileName);
               $targetFilePath = $mediaDir['path'] . '/' . $this->defname;
             } else {
-              $targetFilePath_retina = $mediaDir['path'] . '/' . wp_unique_filename( $mediaDir['path'], $targetFileName_retina);
+              //$targetFilePath_retina = $mediaDir['path'] . '/' . wp_unique_filename( $mediaDir['path'], $targetFileName_retina);
               $defname = wp_unique_filename( $mediaDir['path'], $targetFileName);
               $this->defname = $defname;
               $retinaName = substr_replace( $defname, '@2x.', strrpos( $defname, '.' ), strlen( '.' ) );
@@ -693,7 +701,8 @@ class acf_field_image_crop extends acf_field_image {
                      'post_mime_type' => $wp_filetype['type'],
                      'post_title' => preg_replace('/\.[^.]+$/', '', basename($targetFilePath)),
                      'post_content' => '',
-                     'post_status' => 'inherit'
+                     'post_status' => 'inherit',
+                     'post_author' => 0
                 );
 
                 $attachmentId = wp_insert_attachment( $attachment, $targetFilePath, $postid );

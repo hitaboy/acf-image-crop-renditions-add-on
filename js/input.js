@@ -432,7 +432,7 @@ function initialize_field( $el ) {
                 if(data.success){
                     console.log($field.find('[data-name=remove]'));
                     $field.find('[data-name=image]').attr('src', data.preview_url);
-                    $field.find('[data-name=remove]').attr('datat-renditions', data.renditions);
+                    $field.find('[data-name=remove]').attr('data-renditions', data.renditions);
                     $field.find('[data-name=remove]').data('renditions', data.renditions);
                     $field.find('.acf-image-value').data('cropped-image', data.value);
                     $field.find('.acf-image-value').data('cropped', true);
