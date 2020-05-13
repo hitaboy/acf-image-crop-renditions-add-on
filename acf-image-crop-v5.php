@@ -384,9 +384,7 @@ class acf_field_image_crop extends acf_field_image {
         $masterString = $masterWidth."x".$masterHeight;
         foreach( $renditions as $rendition ) {
           $targetWidth = intval($rendition);
-          pr2($targetWidth);
           $targetHeight = round(($targetWidth*$masterHeight)/$masterWidth);
-          pr2($targetHeight);
           $newString = $targetWidth."x".$targetHeight;
           $newUrl = str_replace($masterString,$newString,$url);
           $response[] =  $newUrl;
